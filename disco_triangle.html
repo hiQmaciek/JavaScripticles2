@@ -2,8 +2,11 @@
 <html lang="en">
 <body>
 <canvas id="canvas" width="600" height="600"></canvas>
+
+<!-- cuon-matrix.js can be obtained from https://github.com/yukoba/WebGLBook/tree/master/lib -->
 <script src="webgl_book_examples/lib/cuon-matrix.js"></script>
 <script>
+
 // Animate a multicolored triangle using a single interleaved vertex buffer.
 // try setting colors via fragcoord.
 
@@ -18,12 +21,11 @@ var VSHADER_SOURCE =
 var FSHADER_SOURCE = 
   'precision mediump float; varying vec4 v_Color;' +
   'uniform mat4 u_ColorShift;' +
-  // 'void main(){gl_FragColor = v_Color * u_ColorShift * u_ColorShift;}';
   'void main(){' +
-    'float dd = 15.0;' +
+    'float dd = 25.0;' +
     'float rd = sqrt(pow(0.5 - mod(gl_FragCoord.x,dd)/dd, 2.0) + pow(0.5 - mod(gl_FragCoord.y,dd)/dd, 2.0));' +
     'vec4 cs = v_Color * u_ColorShift;' +
-    'gl_FragColor = vec4(max(cs.x - rd, 0.0), max(cs.y - rd, 0.0), max(cs.z- rd, 0.0), 1.0);}';
+    'gl_FragColor = vec4(max(cs.x - rd, 0.0), max(cs.y - rd, 0.0), max(cs.z - rd, 0.0), 1.0);}';
 
 var canvas = document.getElementById('canvas');
 var gl = canvas.getContext('webgl');
@@ -70,13 +72,7 @@ var degB = 0;
 var ANGLE_PER_SECOND = 120;
 var lastStepTime = Date.now();
 
-// TODO exercise: Encapsulate the animation logic for the angle into an appropriate JS abstraction
-
-// function AnimAngle(startAngle, anglePerSecond){
-//   this.degB = startAngle;
-
-// };
-
+// single animation frame
 function tick(){
   gl.clear(gl.COLOR_BUFFER_BIT);
 
@@ -87,6 +83,8 @@ function tick(){
   lastStepTime = now;
 
   // create transform matrix based on degB and radB as computed above.
+  // Matrix4 is a utility object defined in the cuon-matrix library, 
+  // https://github.com/yukoba/WebGLBook/tree/master/lib
   var xformMatrix = new Matrix4();
   
   // set matrix for color rotation
@@ -111,6 +109,8 @@ function tick(){
 
   requestAnimationFrame(tick);
 }
+
+// run the animation
 tick();
 
 </script>

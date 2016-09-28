@@ -27,7 +27,7 @@
    float rd = 2.0 * sqrt(pow(0.5 - mod(gl_FragCoord.x + u_Shift,dd)/dd, 2.0)
       + pow(0.5 - mod(gl_FragCoord.y + u_Shift,dd)/dd, 2.0));
    vec4 cs = v_Color;
-   gl_FragColor = vec4(max(cs.x - rd, 0.05), max(cs.y - rd, 0.05), max(cs.z - rd, 0.05), 1.0);
+   gl_FragColor = vec4(0.1 * cs.x + max(cs.x - rd, 0.0), 0.1 * cs.y + max(cs.y - rd, 0.0), 0.1 * cs.z + max(cs.z - rd, 0.0), 1.0);
  }
  // 'gl_FragColor = cs;}'; // use this if you get tired of the disco effect, defined above
 </script>
@@ -56,7 +56,7 @@ gl.attachShader(program, fshader);
 gl.linkProgram(program);
   
 // clear the drawing area
-gl.clearColor(0.0,0.0,0.1,1.0);
+gl.clearColor(0.1,0.1,0.1,1.0);
 gl.clear(gl.COLOR_BUFFER_BIT);
 
 // handles for uniform variables (for animating rotations)
@@ -165,7 +165,7 @@ function tick(){
   gl.uniformMatrix4fv(u_PovMatrix, false, xformMatrix.elements);
 
   // set matrix for perspective transformation (rectangular solid -> Frustum)
-  // arguments are (field_of_view, aspect_ratio, cutoff_plane_near, cutoff_plane_far)
+  // arguments are (angle_of_view, aspect_ratio, cutoff_plane_near, cutoff_plane_far)
   xformMatrix.setPerspective(80, 1.0, 0.1, 2.0);
   gl.uniformMatrix4fv(u_PxvMatrix, false, xformMatrix.elements);
 
